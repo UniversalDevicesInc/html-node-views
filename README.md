@@ -1,6 +1,9 @@
 # html-node-views
 Testing Information and examples for html node views.  This document is intended for developers and testers. HTML Node Views are not production ready.
 
+# Requirements:
+UD Mobile for iOS version 1.1.43 or greater.
+
 # Server
 During testing all HTML files should be hosted on a publicly accessible and secure server.  Production files may be saved in eisy or other location to be determined by UDI.
 #### GitPages:
@@ -19,11 +22,11 @@ The characters "?" (%3F), "=" (%3D), and "&" (%26) must be encoded for this file
 ```
 https://username.github.io/example-tile%3Fheight%3D180%26span%3D3.html
 ```
-The url above should show the following.
+The URL above should show the following.
 ![Screenshot 2023-12-04 at 8 29 12 PM](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/c02d076e-c475-486e-a93f-6dfc1898c8fd)
 
-# UD Mobile html node view
-This is a scrollable full screen view.
+# UD Mobile html Node Views
+This is a scrollable full screen view similar to html Favorites Tiles below.
 Coming Soon!
 
 # UD Mobile html Favorites Tiles
@@ -42,6 +45,105 @@ Save the favorite.
 The favorite tile should now look similar to the following image.
 
 ![single_fav_tile](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/b2839db0-b871-4a87-8eca-c6a508c6170d)
+
+Your first Favorites html tile should now be working!
+
+# Favorites Tiles html
+#### Favorites Tile File Names:
+Favorites html tiles include a query string in the file name so that developers can request the tile height and span "height=180&span=3".  If these values are not present the app will use default values which may cause the tile to be too large/small.  Note that the query string is only required for Favorites html tiles not html Node Views.
+
+# Html JavaScript:
+UD Mobile communicates with your html file with JavaScript (<script>).  These functions must be included in your html files to receive or send messages to UD Mobile.
+
+# JavaScript newMessage Function
+This function receives messages from UD Mobile. The message parameter "jsonString" is JSON as string which needs to be converted to a JavaScript JSON Object.
+```
+ function newMessage(jsonString) {
+    let json = JSON.parse(jsonString);
+    ...
+}
+```
+The JSON object should have a single key with a JSON object as the value.
+## newMessage JSON Keys
+````
+{statusUpdate: {...}}
+{nodeUpdate: {...}}
+{getObservedAddresses: {...}}
+````
+### {statusUpdate: {...}}
+This object contains status <st> updates from UD Mobile.  This can be used to populate your html elements.
+```
+{"statusUpdate": {"address": "ZB25235_001_1","formatted": "100%","status_name": "On Level", "value" : 100, "prec" : 0, "status_id" : "OL" }}
+```
+
+### {nodeUpdate: {...}}
+This object contains node data for the node which is linked to this file. This can be used to show the node name (or favorite name) 
+```
+{"nodeUpdate": {"address": "ZB25235_001_1","name": "ZB 25235.1 On-Off Switch", "enabled":  true}}
+```
+### {getObservedAddresses: {...}}
+This object is a GET request from UD Mobile which is requesting that this file send any additional node addresses which required status observation. The linked node address is included in this object so that developers can request child/sibling nodes if needed.
+```
+{"getObservedAddresses": {"address": "ZB25235_001_1"}}
+```
+Upon receipt of this GET request the html file can (optionally) publish additional node addresses for observation.  There is no need to request the same node address as it is observed automatically.
+
+
+# JavaScript publishMessage Function
+This function sends messages from UD Mobile. The message parameter "jsonString" is JSON as string.  This function holds commands to send to both iOS and Android.  There may be a web function in the future.
+```
+ function publishMessage(jsonString) {
+    console.log('publishMessage');
+    try {
+        <!-- iOS -->
+        if (window.webkit != undefined) {
+            webkit.messageHandlers.postToUdm.postMessage(jsonString);
+        }
+        <!-- Android -->
+        if (window.androidInterface != undefined) {
+            androidInterface.postToUdm(jsonString);
+        }
+        <!-- TODO Add other Clients such as browser -->
+    } catch(err) {
+        console.log('error');
+    }
+}
+```
+
+## publishMessage JSON Keys
+```
+{"setObservedAddresses": []}
+{"sendCommand": {...}}
+```
+### {"sendCommand": {...}}
+This Object is used to send commands to UD Mobile. Note that the Address parameter may be empty if sending to the attached node. If sending to a node with is not attached, then address must be included, or command will be sent to the attached node.  Note that UD Mobile will only send commands to observed node addresses, see setObservedAddresses JSON Object
+
+The following example shows how to update the attached node with the DON (ON) command to 34%. See the slider in the example-tile for an example.
+```
+{"sendCommand":{"address":"","cmd":"DON","p":[{"pId":"","value":"34","uom":"51"}]}}
+```
+The following example shows how to update the attached node with the DON (ON) command to 34% with a Ramp Rate (RR) of 3 seconds. Note that ramp rate may be different values depending on node.
+```
+{"sendCommand":{"address":"","cmd":"DON","p":[{"pId":"","value":"34","uom":"51"}, {"pId":"RR","value":"3.0","uom":"58"}]}}
+```
+The following example shows a command without parameters. This sends the DOF (OFF) Command to the attached node.  See the button in example-tile for an example.
+```
+{"sendCommand": {"address":"", "cmd": "DOF", "p": []}}
+```
+
+
+
+### {"setObservedAddresses": []}
+This Object should contain a list of node addresses which the file would like to observe.  There is no need to send the attached node address.
+```
+{"setObservedAddresses": []}
+OR
+{"setObservedAddresses": ["ZB25235_001_2", "ZB25235_001_3"]}
+```
+
+
+
+
 
 
 
