@@ -19,10 +19,29 @@ The characters "?" (%3F), "=" (%3D), and "&" (%26) must be encoded for this file
 ```
 https://username.github.io/example-tile%3Fheight%3D180%26span%3D3.html
 ```
-The url above should show the following
+The url above should show the following.
 ![Screenshot 2023-12-04 at 8 29 12 PM](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/c02d076e-c475-486e-a93f-6dfc1898c8fd)
 
+# UD Mobile html node view
+This is a scrollable full screen view.
+Coming Soon!
 
+# UD Mobile html Favorites Tiles
+This is a non-scrollable size limited favorites tile.
+During testing the html file must be linked manually.  This will likely change before production.
+#### Add Node To Favorites:
+Go to UD Mobile and add a dimmable light or switch node to Favorites. This can be done from the home tab by clicking the node name (clicking icon may toggle the switch), then pressing the settings icon, then pressing "Add to Favorites".
+#### Link file to node
+From Favorites Tab enter Edit Mode by clicking the Edit Button (pencil icon) at the top of the screen then click the dimmable node, then click Edit from the popup dialog.  
+Change the Favorite Type to "(Beta) Custom Tile".
+Enter the following URL in HTML URL. Note that this URL is not URL Encoded:
+```
+https://username.github.io/example-tile?height=180&span=3.html
+```
+Save the favorite.
+The favorite tile should now look similar to the following image.
+
+![single_fav_tile](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/b2839db0-b871-4a87-8eca-c6a508c6170d)
 
 
 
