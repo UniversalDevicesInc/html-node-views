@@ -146,6 +146,7 @@ The following example shows a command without parameters. This sends the DOF (OF
 
 ### {"setObservedAddresses": []}
 This Object should contain a list of node addresses which the file would like to observe.  There is no need to send the attached node address.
+NOTE: As of writing this document this function is not yet implemented in UD Mobile.
 ```
 {"setObservedAddresses": []}
 OR
