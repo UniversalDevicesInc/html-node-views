@@ -6,7 +6,9 @@ UD Mobile for iOS version 1.1.43 or greater.  Coming soon to Android.
 
 # Known Issues:
 (1) Support for multiple addresse '{"setObservedAddresses": []}' is not fully implemented, currently testing basic functionality for attached nodes.  
+
 (2) All Favorites Tiles have delay in loading, working this for next UDM version.
+
 (3) Some Favorites and User Preferences settings such as node/favorite color, icon, and Hide Background are not passed to the .html file.
 
 # Server
