@@ -18,7 +18,7 @@ This example was created using Git Pages, follow instructions at https://pages.g
 Note that gitpages may not update immediately after pushing to your git pages repository. So please wait a few minutes to check if your subdomain is running at https://username.github.io. When changing .html files please inspect your html on a browser using Developer Tools to verify your changes are being served before testing on UD Mobile.
 
 # HTML File
-Download the https://github.com/UniversalDevicesInc/html-node-views/blob/main/example-tile%3Fheight%3D180%26span%3D3.html (i.e example-tile?height=180&span=3.html) in this repository then add to your repository created above.  Push the new file to origin.
+Download the example file named 'example-tile?height=180&span=3.html' located in this repository (https://github.com/UniversalDevicesInc/html-node-views/blob/main/example-tile%3Fheight%3D180%26span%3D3.html).  Add the example html file to your repositorr, then push the new file to git origin.
 
 ```
 git add .
