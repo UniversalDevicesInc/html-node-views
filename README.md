@@ -155,7 +155,7 @@ OR
 
 
 # Light and Dark Modes
-The example File has the following CSS which will automaitcally change the tile background/text color to match UD Mobile. If this style is not included then the tile may not match colors in UDM.
+The 'example-tile?height=180&span=3.html' has the following CSS which will automaitcally change the tile background/text color to match UD Mobile. If this style is not included then the tile may not match colors in UDM.
 ```
  <style>
     /* To support Light and Dark Modes*/
