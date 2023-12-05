@@ -101,7 +101,7 @@ Upon receipt of this GET request the html file can (optionally) publish addition
 
 
 # JavaScript publishMessage Function
-This function sends messages from UD Mobile. The message parameter "jsonString" is JSON as string.  This function holds commands to send to both iOS and Android.  There may be a web function in the future.
+This function sends messages to UD Mobile. The message parameter "jsonString" is JSON as string.  This function holds commands to send messages to both iOS and Android.  There may be a web function in the future.
 ```
  function publishMessage(jsonString) {
     console.log('publishMessage');
