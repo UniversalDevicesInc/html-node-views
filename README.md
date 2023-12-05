@@ -127,7 +127,7 @@ This function sends messages to UD Mobile. The message parameter "jsonString" is
 {"sendCommand": {...}}
 ```
 ### {"sendCommand": {...}}
-This Object is used to send commands to UD Mobile. Note that the Address parameter may be empty if sending to the attached node. If sending to a node with is not attached, then address must be included, or command will be sent to the attached node.  Note that UD Mobile will only send commands to observed node addresses, see setObservedAddresses JSON Object
+This Object is used to send commands to UD Mobile. Note that the Address parameter may be empty if sending to the attached node. If sending to a node which is not attached, then address must be included or command will be sent to the attached node.  Note that UD Mobile will only send commands to observed node addresses, see setObservedAddresses JSON Object
 
 The following example shows how to update the attached node with the DON (ON) command to 34%. See the slider in the example-tile for an example.
 ```
