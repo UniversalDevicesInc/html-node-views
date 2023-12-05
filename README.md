@@ -5,8 +5,9 @@ Testing Information and examples for html node views.  This document is intended
 UD Mobile for iOS version 1.1.43 or greater.  Coming soon to Android.
 
 # Known Issues:
-Support for multiple addresse '{"setObservedAddresses": []}' is not fully implemented, currently testing basic functionality for attached nodes.  
-All Favorites Tiles have delay in loading, working this for next UDM version.
+(1) Support for multiple addresse '{"setObservedAddresses": []}' is not fully implemented, currently testing basic functionality for attached nodes.  
+(2) All Favorites Tiles have delay in loading, working this for next UDM version.
+(3) Some Favorites and User Preferences settings such as node/favorite color, icon, and Hide Background are not passed to the .html file.
 
 # Server
 During testing all HTML files should be hosted on a publicly accessible and secure server.  Production files may be saved in eisy or other location to be determined by UDI.
