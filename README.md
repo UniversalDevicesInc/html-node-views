@@ -151,8 +151,19 @@ OR
 ```
 
 
-
-
+# Light and Dark Modes
+The example File has the following CSS which will automaitcally change the tile background/text color to match UD Mobile. If this style is not included then the tile may not match colors in UDM.
+```
+ <style>
+    /* To support Light and Dark Modes*/
+    :root {
+        color-scheme: light dark;
+    }
+    body {
+      /* This is the standard Favorites tile color, this can be removed if no background is desired*/
+      background-color: #B0B1B133;
+    }
+```
 
 
 
