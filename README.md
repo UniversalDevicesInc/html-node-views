@@ -12,7 +12,7 @@ UD Mobile for iOS version 1.1.43 or greater.  Coming soon to Android.
 (3) Some Favorites and User Preferences settings such as node/favorite color, icon, and Hide Background are not passed to the .html file.
 
 # Server
-During testing all HTML files should be hosted on a publicly accessible and secure server.  Production files may be saved in eisy or other location to be determined by UDI.
+During testing all HTML files should be hosted on a publicly accessible and secure server.  Production files may be saved on eisy or other location to be determined by UDI.
 #### GitPages:
 This example was created using Git Pages, follow instructions a https://pages.github.com/ for information staring your server.
 Note that gitpages may not update immediately after pushing to your git pages repository. So please wait a few minutes to check if your subdomain is running at https://username.github.io. When changing .html files please inspect your html on a browser using Developer Tools to verify your changes are being served before testing on UD Mobile.
