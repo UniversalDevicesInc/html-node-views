@@ -45,6 +45,10 @@ Enter the following URL in HTML URL. Note that this URL is not URL Encoded:
 ```
 https://username.github.io/example-tile?height=180&span=3.html
 ```
+Favorites Editor Shold look similar to the following:
+![88544](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/014bcf71-19f8-43a5-aa3a-516a58d2b642)
+
+
 Save the favorite.
 The favorite tile should now look similar to the following image.
 
