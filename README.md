@@ -2,7 +2,7 @@
 Testing Information and examples for html node views.  This document is intended for developers and testers. HTML Node Views are not production ready.
 
 # Requirements:
-UD Mobile for iOS version 1.1.43 or greater.
+UD Mobile for iOS version 1.1.43 or greater.  Coming soon to Android.
 
 # Known Issues:
 Support for multiple addresse '{"setObservedAddresses": []}' is not fully implemented, currently testing basic functionality for attached nodes.  
