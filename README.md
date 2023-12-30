@@ -34,7 +34,7 @@ The character "?" (%3F) must be encoded for this file to be viewed in a web brow
 ```
 https://username.github.io/example-tile%3Fheight%3D180%26span%3D3.html
 ```
-The URL above should show the following. Tip: "username" must be replaced with your GitHub username, as viewed in the repostory.
+The URL above should show the following. Tip: "username" must be replaced with your GitHub username, as shown in your GitHub repostory.
 ![Screenshot 2023-12-04 at 8 29 12 PM](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/c02d076e-c475-486e-a93f-6dfc1898c8fd)
 
 # UD Mobile html Node Views
