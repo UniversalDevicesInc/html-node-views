@@ -1,7 +1,7 @@
 # html-node-views
 Testing Information and examples for html node views.  This document is intended for developers and testers. HTML Node Views are not production ready.
 
-See https://wiki.universal-devices.com/UD_Mobile_Custom_Tiles#Simple_Start for quick start example.
+See https://wiki.universal-devices.com/UD_Mobile_Custom_Tiles for quick start example.
 
 # Requirements:
 UD Mobile for iOS version 1.1.47 or greater or Android 1.1.45 or greater.
