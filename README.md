@@ -102,11 +102,11 @@ This object contains node data for the node which is linked to this file. This c
 {"nodeUpdate": {"address": "ZB25235_001_1","name": "ZB 25235.1 On-Off Switch", "enabled":  true}}
 ```
 ### {getObservedAddresses: {...}}
-This object is a GET request from UD Mobile which is requesting that this file send any additional node addresses which required status observation. The linked node address is included in this object so that developers can request child/sibling nodes if needed.
+This object is a GET request from UD Mobile which is requesting that this file send any additional node addresses which require status observation. The linked node address is included in this object so that developers can request child/sibling nodes if needed.
 ```
 {"getObservedAddresses": {"address": "ZB25235_001_1"}}
 ```
-Upon receipt of this GET request the html file can (optionally) publish additional node addresses for observation.  There is no need to request the same node address as it is observed automatically.
+Upon receipt of this GET request the html file can (optionally) publish additional node addresses for observation, see {"setObservedAddresses": []} below.  There is no need to request the same node address as it is observed automatically.
 
 
 # JavaScript publishMessage Function
