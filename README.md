@@ -133,6 +133,8 @@ This function sends messages to UD Mobile. The message parameter "jsonString" is
 ## publishMessage JSON Keys
 ```
 {"setObservedAddresses": []}
+```
+```
 {"sendCommand": {...}}
 ```
 ### {"sendCommand": {...}}
