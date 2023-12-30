@@ -20,8 +20,15 @@ Download the example file named 'example-tile?height=180&span=3.html' located in
 
 ```
 git add .
+```
+```
+git commit
+```
+```
 git push origin main
 ```
+
+
 Any file in this repository will be available at https://username.github.io/filename  however this file name has characters which need to be encoded (more on this below) so use the following URL instead to verify the file is being served.
 The characters "?" (%3F), "=" (%3D), and "&" (%26) must be encoded for this file to be viewed
 ```
