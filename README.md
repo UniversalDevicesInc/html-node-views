@@ -83,7 +83,11 @@ The JSON object should have a single key with a JSON object as the value.
 ## newMessage JSON Keys
 ````
 {statusUpdate: {...}}
+````
+````
 {nodeUpdate: {...}}
+````
+````
 {getObservedAddresses: {...}}
 ````
 ### {statusUpdate: {...}}
