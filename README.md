@@ -162,7 +162,8 @@ This Object should contain a list of node addresses which the file would like to
 NOTE: As of writing this document this function is not yet implemented in UD Mobile.
 ```
 {"setObservedAddresses": []}
-OR
+```
+```
 {"setObservedAddresses": ["ZB25235_001_2", "ZB25235_001_3"]}
 ```
 
