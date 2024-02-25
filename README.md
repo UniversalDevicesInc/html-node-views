@@ -37,7 +37,8 @@ The character "?" (%3F) must be encoded for this file to be viewed in a web brow
 https://username.github.io/example-tile%3Fheight%3D180%26span%3D3.html
 ```
 The URL above should show the following. Tip: "username" must be replaced with your GitHub username, as shown in your GitHub repostory.
-![Screenshot 2023-12-04 at 8 29 12 PM](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/c02d076e-c475-486e-a93f-6dfc1898c8fd)
+![Screenshot 2024-02-25 at 4 05 21 PM](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/513ce583-ca52-4910-a83d-28fc3e76de75)
+
 
 # UD Mobile html Node Views
 This is a scrollable full screen view similar to html Favorites Tiles below.
