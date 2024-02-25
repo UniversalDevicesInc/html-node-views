@@ -56,13 +56,15 @@ Enter the following URL in HTML URL. Note that this URL is not URL Encoded:
 https://username.github.io/example-tile?height=180&span=3.html
 ```
 Favorites Editor Shold look similar to the following:
-![88544](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/014bcf71-19f8-43a5-aa3a-516a58d2b642)
+![88544](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/5c4fd689-1c87-445a-8eec-fefacbfdc2bd)
+
 
 
 Save the favorite.
 The favorite tile should now look similar to the following image.
 
-![single_fav_tile](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/b2839db0-b871-4a87-8eca-c6a508c6170d)
+![single_fav_tile](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/22cf2e8d-1ef8-4715-99cb-7cfc85a6ddba)
+
 
 Your first Favorites html tile should now be working!
 
