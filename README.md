@@ -34,7 +34,7 @@ git push origin main
 Any file in this repository will be available at https://username.github.io/filename  however this file name has characters which need to be encoded (more on this below) so use the following URL instead to verify the file is being served.
 The character "?" (%3F) must be encoded for this file to be viewed in a web browser.
 ```
-https://username.github.io/example-tile%3Fheight%3D180%26span%3D3.html
+https://username.github.io/example-tile%3Fheight=180%26span=3.html
 ```
 The URL above should show the following. Tip: "username" must be replaced with your GitHub username, as shown in your GitHub repostory.
 
