@@ -11,6 +11,8 @@ UD Mobile for iOS version 1.1.47 or greater or Android 1.1.45 or greater.
 
 (2) Some Favorites and User Preferences settings such as node/favorite color, icon, and Hide Background are not passed to the .html file.
 
+(3) Some Windows Developers report issues with git and a file name with a query string.  We may want to accespt a file with encoded query string in UDM.
+
 # Server
 During testing all HTML files should be hosted on a publicly accessible and secure server.  Production files may be saved on eisy or other location to be determined by UDI.
 #### GitPages:
