@@ -16,7 +16,7 @@ UD Mobile for iOS version 1.1.47 or greater or Android 1.1.45 or greater.
 # Server
 During testing all HTML files should be hosted on a publicly accessible and secure server.  Production files may be saved on eisy or other location to be determined by UDI.
 #### GitPages:
-This example was created using Git Pages, follow instructions at https://pages.github.com/ for information starting your server.
+This example was created using Git Pages, follow instructions at https://pages.github.com/ for information starting your server.  See https://stackoverflow.com/a/63621133/5026806 for instructions on hosting from a repository instead of git root account.
 Note that gitpages may not update immediately after pushing to your git pages repository. So please wait a few minutes to check if your subdomain is running at https://username.github.io. When changing .html files please inspect your html on a browser using Developer Tools to verify your changes are being served before testing on UD Mobile.
 
 # HTML Favorites Tile File
