@@ -1,0 +1,24 @@
+/* To support Light and Dark Modes*/
+:root {
+    color-scheme: light dark;
+}
+/* Full width Slider */
+input {
+    width: 100%
+}
+/* Container Padding */
+div {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+body {
+    /* This is the standard Favorites tile color, this can be removed if no background is desired*/
+    background-color: #B0B1B133;
+}
+p {
+    font-size: 14px;
+}
+html * {
+    /* Prevent Text size adjustments in Safari (iOS Web View) on screen rotation*/
+    -webkit-text-size-adjust: none; /* Never autoresize text */
+}
