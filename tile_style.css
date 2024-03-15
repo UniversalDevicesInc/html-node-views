@@ -2,10 +2,6 @@
 :root {
     color-scheme: light dark;
 }
-/* Full width Slider */
-input {
-    width: 100%
-}
 /* Container Padding */
 div {
     padding-right: 5px;
