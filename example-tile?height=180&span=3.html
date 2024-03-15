@@ -29,25 +29,25 @@
     }
     </style>
     <script>
-        <!-- Receives json messages from IoX Client -->
+        // Receives json messages from IoX Client -->
         function newMessage(jsonString) {
             console.log('newMessage received');
             let json = JSON.parse(jsonString);
             <!-- statusUpdate-->
             let statusUpdate = json["statusUpdate"];
-            if (statusUpdate != undefined) {
+            if (statusUpdate !== undefined) {
                 updateStatus(statusUpdate);
                 return;
             }
             <!-- getObservedAddresses -->
             let getObservedAddresses = json["getObservedAddresses"];
-            if (getObservedAddresses != undefined){
+            if (getObservedAddresses !== undefined){
                 setObservedAddresses(getObservedAddresses);
                 return;
             }
             <!-- nodeUpdate -->
             let nodeUpdate = json["nodeUpdate"];
-            if (nodeUpdate != undefined){
+            if (nodeUpdate !== undefined){
                 updateNode(nodeUpdate);
                 return;
             }
@@ -59,11 +59,11 @@
               console.log('publishMessage');
               try {
                   <!-- iOS -->
-                  if (window.webkit != undefined) {
+                  if (window.webkit !== undefined) {
                       webkit.messageHandlers.postToUdm.postMessage(jsonString);
                   }
                   <!-- Android -->
-                  if (window.androidInterface != undefined) {
+                  if (window.androidInterface !== undefined) {
                       androidInterface.postToUdm(jsonString);
                   }
                   <!-- TODO Add other Clients such as browser -->
@@ -91,13 +91,13 @@
             let formatted = json["formatted"];
             switch(status){
             case "ST":
-                var slider = document.getElementById("mySlider");
+                const slider = document.getElementById("mySlider");
                 slider.value = value;
-                var statuslabel = document.getElementById("statuslabel");
+                const statuslabel = document.getElementById("statuslabel");
                 statuslabel.innerHTML = "Current Status: " + formatted;
                 break;
             case "OL":
-                var myelement = document.getElementById("onLevelLabel");
+                const myelement = document.getElementById("onLevelLabel");
                 myelement.innerHTML = "On Level: " + formatted;
                 break;
             default:
@@ -110,7 +110,7 @@
             let address = json["address"];
             let name = json["name"];
             let enabled = json["enabled"];
-            var myelement = document.getElementById("nodeName");
+            const myelement = document.getElementById("nodeName");
             myelement.innerHTML = name;
         }
 
