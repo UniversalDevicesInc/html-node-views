@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        // Receives json messages from IoX Client -->
+        function newMessage(jsonString) {
+            console.log('newMessage received');
+            let json = JSON.parse(jsonString);
+            <!-- statusUpdate-->
+            let statusUpdate = json["statusUpdate"];
+            if (statusUpdate !== undefined) {
+                updateStatus(statusUpdate);
+                return;
+            }
+            <!-- getObservedAddresses -->
+            let getObservedAddresses = json["getObservedAddresses"];
+            if (getObservedAddresses !== undefined) {
+                setObservedAddresses(getObservedAddresses);
+                return;
+            }
+            <!-- nodeUpdate -->
+            let nodeUpdate = json["nodeUpdate"];
+            if (nodeUpdate !== undefined) {
+                updateNode(nodeUpdate);
+                return;
+            }
+            console.log('could not match newMessage Type');
+        }
+
+        <!-- Sends json message to IoX client -->
+        function publishMessage(jsonString) {
+            console.log('publishMessage');
+            try {
+                <!-- iOS -->
+                if (window.webkit !== undefined) {
+                    webkit.messageHandlers.postToUdm.postMessage(jsonString);
+                }
+                <!-- Android -->
+                if (window.androidInterface !== undefined) {
+                    androidInterface.postToUdm(jsonString);
+                }
+                <!-- TODO Add other Clients such as browser -->
+            } catch (err) {
+                console.log('error');
+            }
+        }
+
+        <!-- Send command to IoX -->
+        function sendCommand(address, cmd, params) {
+            console.log('sendCommand called');
+            let obj = {"sendCommand": {"address": address, "cmd": cmd, "p": params}};
+            <!-- Multiple Params would be let obj = {"address": "ZB25235_001_1" , "cmd": "DON", "p": [{'pId': '', 'value': this.value, 'uom': '51'}, {'pId': 'OL', 'value': '100', 'uom': '51'}] }; -->
+            let jsonString = JSON.stringify(obj);
+            publishMessage(jsonString);
+        }
+
+
+        <!-- Process Status Update. For multiple nodes switch(address) -->
+        function updateStatus(json) {
+            let address = json["address"];
+            let status = json["status_id"];
+            let statusName = json["status_name"];
+            let value = json["value"];
+            let formatted = json["formatted"];
+            switch (status) {
+                case "ST":
+                    const slider = document.getElementById("mySlider");
+                    slider.value = value;
+                    const statuslabel = document.getElementById("statuslabel");
+                    statuslabel.innerHTML = "Current Status: " + formatted;
+                    break;
+                case "OL":
+                    const myelement = document.getElementById("onLevelLabel");
+                    myelement.innerHTML = "On Level: " + formatted;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        <!-- Process Node Update. For multiple nodes switch(address) -->
+        function updateNode(json) {
+            let address = json["address"];
+            let name = json["name"];
+            let enabled = json["enabled"];
+            const myelement = document.getElementById("nodeName");
+            myelement.innerHTML = name;
+        }
+
+        <!-- Process Observed Addresses Request -->
+        function setObservedAddresses(json) {
+            <!-- This is the Address of the node attached by the client. There is no need to request observation of this address as the Client will automatically observe if not null.  If other addresses are to be observed they are requested here -->
+            let address = json["address"];
+            let obj = {"setObservedAddresses": []};
+            let jsonString = JSON.stringify(obj);
+            publishMessage(jsonString);
+        }
+
+    </script>
+    <link rel="stylesheet" href="https://universaldevicesinc.github.io/html-node-views/tile_style.css">
+</head>
+<body>
+<div class="namecontainer">
+    <p id="nodeName">-</p>
+</div>
+<div class="slidecontainer">
+    <p id="statuslabel">-</p>
+    <input id="mySlider" type="range" min="0" max="100" value="0"
+           onchange="sendCommand('', 'DON', [{'pId': '', 'value': this.value, 'uom': '51'}])">
+</div>
+<div class="buttoncontainer">
+    <button type="submit" class="style" onclick="sendCommand('', 'DOF', [])"><i>Off</i></button>
+</div>
+<div class="onlevelcontainer">
+    <p id="onLevelLabel">-</p>
+</div>
+
+</body>
+</html>
