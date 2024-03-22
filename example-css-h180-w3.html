@@ -3,100 +3,160 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
-        // Receives json messages from IoX Client -->
-        function newMessage(jsonString) {
-            console.log('newMessage received');
-            let json = JSON.parse(jsonString);
-            <!-- statusUpdate-->
-            let statusUpdate = json["statusUpdate"];
-            if (statusUpdate !== undefined) {
-                updateStatus(statusUpdate);
-                return;
-            }
-            <!-- getObservedAddresses -->
-            let getObservedAddresses = json["getObservedAddresses"];
-            if (getObservedAddresses !== undefined) {
-                setObservedAddresses(getObservedAddresses);
-                return;
-            }
-            <!-- nodeUpdate -->
-            let nodeUpdate = json["nodeUpdate"];
-            if (nodeUpdate !== undefined) {
-                updateNode(nodeUpdate);
-                return;
-            }
-            console.log('could not match newMessage Type');
+        var parentOrigin = new URLSearchParams(window.location.search).get('parent')
+        //log the parent origin this is undefined for Android/iOS
+        console.log('PARENT: ' + parentOrigin)
+        if (!parentOrigin) {
+            //This will be triggered by Android and iOS as there is no parent
+            console.log('WARNING: parent not set on the query string.')
         }
 
-        <!-- Sends json message to IoX client -->
-        function publishMessage(jsonString) {
-            console.log('publishMessage');
+        // The browser console will show that logging originated from this tile
+        function log(data) {
+            console.log('MyTile -', data)
+        }
+
+
+        //MessageChannel is used to communicate with Android and removes the need for the Android JavaScript Interface
+        //This is used to both postMessage and communicate with Native Android
+        //Notes: (May be possible to use Message ports with web also)
+        const channel = new MessageChannel();
+        var nativeJsPortOne = channel.port1;
+        var nativeJsPortTwo = channel.port2;
+        nativeJsPortOne.start();
+        nativeJsPortTwo.start();
+
+        // Messages can have one or several of these keys. The content will be routed to these handler functions
+        var messageHandlers = {
+            nodeUpdate: nodeUpdate,
+            statusUpdate: statusUpdate,
+            getObservedAddresses: setObservedAddresses,
+        }
+
+        window.addEventListener('message', function (event) {
+            log('newMessage received: ' + event.data);
+
+            // If the event origin is not the parent, then something's wrong
+            if (parentOrigin && parentOrigin !== event.origin) {
+                log('WARNING: event origin is not the parent.')
+            }
+
+            if (!event.origin){
+                //just a test to show us the event.origin is undefined on Android iOS
+                //however parentOrigin is also undefined so the next WARNING is not trigge4red
+                log('event origin: is undefined');
+            }
+
+            // If the event origin is not the parent, then something's wrong
+            if (parentOrigin && parentOrigin !== event.origin) {
+                log('WARNING: event origin is not the parent. Event: ' + event.origin + ", Parent: " + parentOrigin)
+            }
+
+            //capture the port setup by Android. "capturePort" is defined in Android WebMessageCompat
+            //WebMessageCompat webMessageCompat = new WebMessageCompat("capturePort", new WebMessagePortCompat[] {nativeToJsPorts[1]});
+            //WebViewCompat.postWebMessage(webView, webMessageCompat, Uri.EMPTY);
+            if (event.data === "capturePort"){
+                log('Message Capture Port')
+                if (event.ports[0] != null) {
+                    log('Set Capture Port')
+                    nativeJsPortOne = event.ports[0]
+                    return
+                }
+                log('Could not set Capture Port')
+                return
+            }
+
+            var msg = JSON.parse(event.data)
+
+            Object.keys(msg).forEach(function (key) {
+                var handler = messageHandlers[key]
+
+                if (handler) {
+                    handler(msg[key])
+                } else {
+                    log('Invalid key in message: ' + key)
+                }
+            })
+
+            // Test accessing parent document. This has to fail.
+            // const nElements = window.parent && window.parent.document && window.parent.document.all && window.parent.document.all.length
+            // console.log(`window.parent access: ${nElements}`)
+        });
+
+
+        // Sends message to IoX client
+        function publishMessage(obj) {
+            var jsonString = JSON.stringify(obj);
+
+            log('publishMessage: ' + jsonString);
+
             try {
-                <!-- iOS -->
+                //Send messages to iOS. Unfortunately MessagePort does not work with iOS.
                 if (window.webkit !== undefined) {
                     webkit.messageHandlers.postToUdm.postMessage(jsonString);
                 }
-                <!-- Android -->
-                if (window.androidInterface !== undefined) {
-                    androidInterface.postToUdm(jsonString);
-                }
-                <!-- TODO Add other Clients such as browser -->
-            } catch (err) {
-                console.log('error');
+                //send message to Android (May be possible to use Message ports with web also)
+                nativeJsPortOne.postMessage(jsonString);
+                //Post to parent Web
+
+                window.parent.postMessage(jsonString, parentOrigin)
+            } catch(err) {
+                log(err.message);
             }
         }
 
-        <!-- Send command to IoX -->
+        // Send command to IoX
         function sendCommand(address, cmd, params) {
-            console.log('sendCommand called');
-            let obj = {"sendCommand": {"address": address, "cmd": cmd, "p": params}};
-            <!-- Multiple Params would be let obj = {"address": "ZB25235_001_1" , "cmd": "DON", "p": [{'pId': '', 'value': this.value, 'uom': '51'}, {'pId': 'OL', 'value': '100', 'uom': '51'}] }; -->
-            let jsonString = JSON.stringify(obj);
-            publishMessage(jsonString);
+            var msg = {"sendCommand": {"address": address , "cmd": cmd, "p": params }};
+            <!-- Multiple Params would be var obj = {"address": "ZB25235_001_1" , "cmd": "DON", "p": [{'pId': '', 'value': this.value, 'uom': '51'}, {'pId': 'OL', 'value': '100', 'uom': '51'}] }; -->
+            publishMessage(msg);
         }
 
-
-        <!-- Process Status Update. For multiple nodes switch(address) -->
-        function updateStatus(json) {
-            let address = json["address"];
-            let status = json["status_id"];
-            let statusName = json["status_name"];
-            let value = json["value"];
-            let formatted = json["formatted"];
-            switch (status) {
-                case "ST":
-                    const slider = document.getElementById("mySlider");
-                    slider.value = value;
-                    const statuslabel = document.getElementById("statuslabel");
-                    statuslabel.innerHTML = "Current Status: " + formatted;
-                    break;
-                case "OL":
-                    const myelement = document.getElementById("onLevelLabel");
-                    myelement.innerHTML = "On Level: " + formatted;
-                    break;
-                default:
-                    break;
+        // Process Status Update. For multiple nodes switch(address)
+        function statusUpdate(updates){
+            // The statusUpdate can be a single object, or an array.
+            if (!Array.isArray(updates)) {
+                updates = [updates]
             }
+
+            updates.forEach(function (update) {
+                // var address = update.address
+                // var statusName = update.status_name
+                var status = update.status_id
+                var value = update.value
+                var formatted = update.formatted
+                switch(status){
+                    case 'ST':
+                        var slider = document.getElementById('mySlider');
+                        slider.value = value;
+                        var statuslabel = document.getElementById('statuslabel');
+                        statuslabel.innerHTML = formatted;
+                        break;
+                    case 'OL':
+                        var myelement = document.getElementById('onLevelLabel');
+                        myelement.innerHTML = formatted;
+                        break;
+                    default:
+                        break;
+                }
+            })
         }
 
-        <!-- Process Node Update. For multiple nodes switch(address) -->
-        function updateNode(json) {
-            let address = json["address"];
-            let name = json["name"];
-            let enabled = json["enabled"];
-            const myelement = document.getElementById("nodeName");
-            myelement.innerHTML = name;
+        // Process Node Update. For multiple nodes switch(address)
+        function nodeUpdate(nodeInfo){
+            // var address = nodeInfo.address
+            // var enabled = nodeInfo.enabled
+            var name = nodeInfo.name
+            document.getElementById('nodeName').innerHTML = name
         }
 
-        <!-- Process Observed Addresses Request -->
-        function setObservedAddresses(json) {
-            <!-- This is the Address of the node attached by the client. There is no need to request observation of this address as the Client will automatically observe if not null.  If other addresses are to be observed they are requested here -->
-            let address = json["address"];
-            let obj = {"setObservedAddresses": []};
-            let jsonString = JSON.stringify(obj);
-            publishMessage(jsonString);
+        // Process Observed Addresses Request
+        function setObservedAddresses(observed){
+            // This is the Address of the node attached by the client. There is no need to request observation of this address as the Client will automatically observe if not null.  If other addresses are to be observed they are requested here
+            // var address = observed.address
+            var msg = {'setObservedAddresses': []};
+            publishMessage(msg);
         }
-
     </script>
     <link rel="stylesheet" href="https://universaldevicesinc.github.io/html-node-views/tile_style.css">
 </head>
