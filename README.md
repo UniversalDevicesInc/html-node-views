@@ -1,17 +1,15 @@
 # html-node-views
 Testing Information and examples for html node views.  This document is intended for developers and testers. HTML Node Views are not production ready.
 
-See https://wiki.universal-devices.com/UD_Mobile_Custom_Tiles for quick start example.
+TODO: <strike>See https://wiki.universal-devices.com/UD_Mobile_Custom_Tiles for quick start example.</strike>
 
 # Requirements:
-UD Mobile for iOS version 1.1.47 or greater or Android 1.1.45 or greater.
+UD Mobile for iOS version 1.1.56 or greater or Android 1.1.64 or greater.
 
 # Known Issues:
 (1) Support for multiple addresse '{"setObservedAddresses": []}' is not fully implemented, currently testing basic functionality for attached nodes.  
 
 (2) Some Favorites and User Preferences settings such as node/favorite color, icon, and Hide Background are not passed to the .html file.
-
-(3) Some Windows Developers report issues with git and a file name with a query string.  We may want to accept a file with encoded query string in UDM.
 
 # Server
 During testing all HTML files should be hosted on a publicly accessible and secure server.  Production files may be saved on eisy or other location to be determined by UDI.
@@ -35,8 +33,9 @@ git push origin main
 
 Any file in this repository will be available at https://username.github.io/filename  however this file name has characters which need to be encoded (more on this below) so use the following URL instead to verify the file is being served.  Note that username should be the github username
 The character "?" (%3F) must be encoded for this file to be viewed in a web browser.
+TODO Add Repository Pages example.
 ```
-https://username.github.io/example-tile%3Fheight=180%26span=3.html
+https://username.github.io/example-tile-h180-w3.html
 ```
 The URL above should show the following. Tip: "username" must be replaced with your GitHub username, as shown in your GitHub repostory.
 
@@ -53,13 +52,22 @@ During testing the html file must be linked manually.  This will likely change b
 #### Add Node To Favorites:
 Go to UD Mobile and add a dimmable light or switch node to Favorites. This can be done from the home tab by clicking the node name (clicking icon may toggle the switch), then pressing the settings icon, then pressing "Add to Favorites".
 #### Link file to node
-From Favorites Tab enter Edit Mode by clicking the Edit Button (pencil icon) at the top of the screen then click the dimmable node, then click Edit from the popup dialog.  
+iOS version > 1.1.63:
+```
+From Favorites Tab, press the menu on the dimmable node, then click Edit from the popup menu.
+```
+All Other versions:
+```
+From Favorites Tab enter Edit Mode by clicking the Edit Button (pencil icon) at the top of the screen then click the dimmable node, then click Edit from the popup dialog.
+```
+
 Change the Favorite Type to "(Beta) Custom Tile".
 Enter the following URL in HTML URL. Note that this URL is not URL Encoded:
 ```
-https://username.github.io/example-tile?height=180&span=3.html
+https://username.github.io/example-tile-h180-w3.html
 ```
-Favorites Editor Shold look similar to the following:
+Favorites Editor Should look similar to the following:
+
 ![88544](https://github.com/UniversalDevicesInc/html-node-views/assets/14967116/5c4fd689-1c87-445a-8eec-fefacbfdc2bd)
 
 
@@ -77,13 +85,12 @@ Your first Favorites html tile should now be working!
 Favorites html tiles include a query string in the file name so that developers can request the tile height and span "height=180&span=3".  If these values are not present the app will use default values which may cause the tile to be too large/small.  Note that the query string is only required for Favorites html tiles not html Node Views.
 
 # Html JavaScript:
-UD Mobile communicates with your html file with JavaScript (<script>).  These functions must be included in your html files to receive or send messages to UD Mobile.
+UD Mobile communicates with your html file with Message Handlers.  These functions must be included in your html files to receive or send messages to UD Mobile.
 
 # JavaScript newMessage Function
 This function receives messages from UD Mobile. The message parameter "jsonString" is JSON as string which needs to be converted to a JavaScript JSON Object.
 ```
- function newMessage(jsonString) {
-    let json = JSON.parse(jsonString);
+  window.addEventListener('message', function (event) {
     ...
 }
 ```
@@ -120,22 +127,26 @@ Upon receipt of this GET request the html file can (optionally) publish addition
 # JavaScript publishMessage Function
 This function sends messages to UD Mobile. The message parameter "jsonString" is JSON as string.  This function holds commands to send messages to both iOS and Android.  There may be a web function in the future.
 ```
- function publishMessage(jsonString) {
-    console.log('publishMessage');
-    try {
-        <!-- iOS -->
-        if (window.webkit != undefined) {
-            webkit.messageHandlers.postToUdm.postMessage(jsonString);
+        // Sends message to IoX client
+        function publishMessage(obj) {
+            var jsonString = JSON.stringify(obj);
+
+            log('publishMessage: ' + jsonString);
+
+            try {
+                //Send messages to iOS. Unfortunately MessagePort does not work with iOS.
+                if (window.webkit !== undefined) {
+                    webkit.messageHandlers.postToUdm.postMessage(jsonString);
+                }
+                //send message to Android (May be possible to use Message ports with web also)
+                nativeJsPortOne.postMessage(jsonString);
+                //Post to parent Web
+
+                window.parent.postMessage(jsonString, parentOrigin)
+            } catch(err) {
+                log(err.message);
+            }
         }
-        <!-- Android -->
-        if (window.androidInterface != undefined) {
-            androidInterface.postToUdm(jsonString);
-        }
-        <!-- TODO Add other Clients such as browser -->
-    } catch(err) {
-        console.log('error');
-    }
-}
 ```
 
 ## publishMessage JSON Keys
